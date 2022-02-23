@@ -6,8 +6,8 @@ import { CreateStatementUseCase } from "./CreateStatementUseCase";
 import { ICreateStatementDTO } from "./ICreateStatementDTO";
 
 let inMemoryStatementsRepository: InMemoryStatementsRepository;
+let inMemoryUsersRepository: InMemoryUsersRepository;
 let createStatementUseCase: CreateStatementUseCase;
-let usersRepository: InMemoryUsersRepository;
 
 enum OperationType {
   DEPOSIT = "deposit",
@@ -16,10 +16,10 @@ enum OperationType {
 
 describe("Create Statement UseCase", () => {
   beforeEach(() => {
-    usersRepository = new InMemoryUsersRepository();
+    inMemoryUsersRepository = new InMemoryUsersRepository();
     inMemoryStatementsRepository = new InMemoryStatementsRepository();
     createStatementUseCase = new CreateStatementUseCase(
-      usersRepository,
+      inMemoryUsersRepository,
       inMemoryStatementsRepository
     );
   });
@@ -31,7 +31,7 @@ describe("Create Statement UseCase", () => {
       password: "it doesn't matter",
     };
 
-    const { id: user_id = "" } = await usersRepository.create(
+    const { id: user_id = "" } = await inMemoryUsersRepository.create(
       userCreatedToTest
     );
 
@@ -63,7 +63,7 @@ describe("Create Statement UseCase", () => {
       password: "whatever password",
     };
 
-    const { id: user_id = "" } = await usersRepository.create(
+    const { id: user_id = "" } = await inMemoryUsersRepository.create(
       userCreatedToTest
     );
 
@@ -126,7 +126,7 @@ describe("Create Statement UseCase", () => {
         password: "whatever password",
       };
 
-      const { id: user_id = "" } = await usersRepository.create(
+      const { id: user_id = "" } = await inMemoryUsersRepository.create(
         userCreatedToTest
       );
 
