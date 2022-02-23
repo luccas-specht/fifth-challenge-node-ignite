@@ -1,7 +1,7 @@
 import { compare } from "bcryptjs";
 
-import { AppError } from "../../../../shared/errors/AppError";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
+import { CreateUserError } from "./CreateUserError";
 
 import { CreateUserUseCase } from "./CreateUserUseCase";
 import { ICreateUserDTO } from "./ICreateUserDTO";
@@ -52,6 +52,6 @@ describe("Create User Use Case", () => {
 
       await createUserUseCase.execute(firstUseCreate);
       await createUserUseCase.execute(secondUserCreate);
-    }).rejects.toBeInstanceOf(AppError);
+    }).rejects.toBeInstanceOf(CreateUserError);
   });
 });

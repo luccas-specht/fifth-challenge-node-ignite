@@ -1,7 +1,7 @@
 import { compare } from "bcryptjs";
-import { AppError } from "../../../../shared/errors/AppError";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { ICreateUserDTO } from "../createUser/ICreateUserDTO";
+import { ShowUserProfileError } from "./ShowUserProfileError";
 import { ShowUserProfileUseCase } from "./ShowUserProfileUseCase";
 
 let usersRepository: InMemoryUsersRepository;
@@ -41,6 +41,6 @@ describe("Show User Profile Use Case", () => {
       const userIdNonExists: string = "non-exists-id";
 
       await showUserProfileUseCase.execute(userIdNonExists);
-    }).rejects.toBeInstanceOf(AppError);
+    }).rejects.toBeInstanceOf(ShowUserProfileError);
   });
 });

@@ -1,7 +1,7 @@
-import { AppError } from "../../../../shared/errors/AppError";
 import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
 import { ICreateUserDTO } from "../../../users/useCases/createUser/ICreateUserDTO";
 import { InMemoryStatementsRepository } from "../../repositories/in-memory/InMemoryStatementsRepository";
+import { CreateStatementError } from "./CreateStatementError";
 import { CreateStatementUseCase } from "./CreateStatementUseCase";
 import { ICreateStatementDTO } from "./ICreateStatementDTO";
 
@@ -100,7 +100,7 @@ describe("Create Statement UseCase", () => {
       };
 
       await createStatementUseCase.execute(statementCreatedToTest);
-    }).rejects.toBeInstanceOf(AppError);
+    }).rejects.toBeInstanceOf(CreateStatementError.UserNotFound);
   });
 
   it("should be not able to create a statement when type withdraw and user doesn't exists", () => {
@@ -115,13 +115,13 @@ describe("Create Statement UseCase", () => {
       };
 
       await createStatementUseCase.execute(statementCreatedToTest);
-    }).rejects.toBeInstanceOf(AppError);
+    }).rejects.toBeInstanceOf(CreateStatementError.UserNotFound);
   });
 
   it("should be not able to create a statement when type is withdraw and user has insufficient funds", () => {
     expect(async () => {
       const userCreatedToTest: ICreateUserDTO = {
-        name: "Thiago Nigro(relax man, i'm only kidding with you)",
+        name: "Thiago Nigro(relax man, i'm kidding with you)",
         email: "whatever email",
         password: "whatever password",
       };
@@ -138,6 +138,6 @@ describe("Create Statement UseCase", () => {
       };
 
       await createStatementUseCase.execute(statementCreatedToTest);
-    }).rejects.toBeInstanceOf(AppError);
+    }).rejects.toBeInstanceOf(CreateStatementError.InsufficientFunds);
   });
 });

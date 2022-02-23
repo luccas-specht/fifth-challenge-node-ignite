@@ -1,6 +1,6 @@
-import { AppError } from "../../../../shared/errors/AppError";
 import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
 import { InMemoryStatementsRepository } from "../../repositories/in-memory/InMemoryStatementsRepository";
+import { GetBalanceError } from "./GetBalanceError";
 import { GetBalanceUseCase } from "./GetBalanceUseCase";
 
 let inMemoryStatementsRepository: InMemoryStatementsRepository;
@@ -40,6 +40,6 @@ describe("Get Balance UseCase", () => {
     expect(async () => {
       const fakeId: string = "fakeId";
       await getBalanceUseCase.execute({ user_id: fakeId });
-    }).rejects.toBeInstanceOf(AppError);
+    }).rejects.toBeInstanceOf(GetBalanceError);
   });
 });

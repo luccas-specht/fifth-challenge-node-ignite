@@ -1,25 +1,29 @@
-import { AppError } from "../../../../shared/errors/AppError";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { ICreateUserDTO } from "../createUser/ICreateUserDTO";
 import { AuthenticateUserUseCase } from "./AuthenticateUserUseCase";
+import { IncorrectEmailOrPasswordError } from "./IncorrectEmailOrPasswordError";
 
-let usersRepository: InMemoryUsersRepository;
+let inMemoryUsersRepository: InMemoryUsersRepository;
 let authenticateUserUseCase: AuthenticateUserUseCase;
 
 describe("Authenticated User Use Case", () => {
   beforeEach(() => {
-    usersRepository = new InMemoryUsersRepository();
-    authenticateUserUseCase = new AuthenticateUserUseCase(usersRepository);
+    inMemoryUsersRepository = new InMemoryUsersRepository();
+    authenticateUserUseCase = new AuthenticateUserUseCase(
+      inMemoryUsersRepository
+    );
   });
 
   /* it("should be able to authenticated an user", async () => {
-    const userTestToCreate: ICreateUserDTO = {
+    const userToTest: ICreateUserDTO = {
       name: "Lukinhas ppt",
       email: "lukinhasPpt157@gmail.com.br",
       password: "oi",
     };
 
-    const { email, password } = await usersRepository.create(userTestToCreate);
+    const { email, password } = await inMemoryUsersRepository.create(
+      userToTest
+    );
 
     const result = await authenticateUserUseCase.execute({
       email,
@@ -36,48 +40,48 @@ describe("Authenticated User Use Case", () => {
 
   it("should be not able to authenticated an user when email is incorrect", () => {
     expect(async () => {
-      const userTestToCreate: ICreateUserDTO = {
+      const userToTest: ICreateUserDTO = {
         name: "Jon Snow",
         email: "JonathanSnow@gmail.com.br",
         password: "00980",
       };
 
-      const userSession = {
+      const userSessionToTest = {
         email: "daenerystargaryenoffical@gmail.com",
-        password: userTestToCreate.password,
+        password: userToTest.password,
       };
 
-      await usersRepository.create(userTestToCreate);
-      await authenticateUserUseCase.execute(userSession);
-    }).rejects.toBeInstanceOf(AppError);
+      await inMemoryUsersRepository.create(userToTest);
+      await authenticateUserUseCase.execute(userSessionToTest);
+    }).rejects.toBeInstanceOf(IncorrectEmailOrPasswordError);
   });
 
   it("should be not able to authenticated an user when email isn't exists", () => {
     expect(async () => {
-      const userSession = {
+      const userSessionToTest = {
         email: "JonathanSnow@gmail.com.br",
         password: "00980",
       };
 
-      await authenticateUserUseCase.execute(userSession);
-    }).rejects.toBeInstanceOf(AppError);
+      await authenticateUserUseCase.execute(userSessionToTest);
+    }).rejects.toBeInstanceOf(IncorrectEmailOrPasswordError);
   });
 
   it("should be not able to authenticated an user when password is incorrect", () => {
     expect(async () => {
-      const userTestToCreate: ICreateUserDTO = {
+      const userToTest: ICreateUserDTO = {
         name: "Jaime Lannister",
         email: "lannister.jaime@gmail.com.br",
         password: "AUHSA&?/HG$11)",
       };
 
-      const userSession = {
-        email: userTestToCreate.email,
+      const userSessionToTest = {
+        email: userToTest.email,
         password: "password super secret",
       };
 
-      await usersRepository.create(userTestToCreate);
-      await authenticateUserUseCase.execute(userSession);
-    }).rejects.toBeInstanceOf(AppError);
+      await inMemoryUsersRepository.create(userToTest);
+      await authenticateUserUseCase.execute(userSessionToTest);
+    }).rejects.toBeInstanceOf(IncorrectEmailOrPasswordError);
   });
 });
