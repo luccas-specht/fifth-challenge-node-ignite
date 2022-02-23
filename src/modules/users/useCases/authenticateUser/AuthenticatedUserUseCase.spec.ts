@@ -12,7 +12,7 @@ describe("Authenticated User Use Case", () => {
     authenticateUserUseCase = new AuthenticateUserUseCase(usersRepository);
   });
 
-  /*   it("should be able to authenticated an user", async () => {
+  /* it("should be able to authenticated an user", async () => {
     const userTestToCreate: ICreateUserDTO = {
       name: "Lukinhas ppt",
       email: "lukinhasPpt157@gmail.com.br",
