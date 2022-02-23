@@ -14,30 +14,6 @@ describe("Authenticated User Use Case", () => {
     );
   });
 
-  /* it("should be able to authenticated an user", async () => {
-    const userToTest: ICreateUserDTO = {
-      name: "Lukinhas ppt",
-      email: "lukinhasPpt157@gmail.com.br",
-      password: "oi",
-    };
-
-    const { email, password } = await inMemoryUsersRepository.create(
-      userToTest
-    );
-
-    const result = await authenticateUserUseCase.execute({
-      email,
-      password,
-    });
-
-    expect(result.token).toBeDefined();
-    expect(result.user).toBeDefined();
-    expect(result.user).toHaveProperty("id");
-    expect(result.user).toHaveProperty("name");
-    expect(result.user).toHaveProperty("email");
-    expect(result.user.email).toEqual(email);
-  }); */
-
   it("should be not able to authenticated an user when email is incorrect", () => {
     expect(async () => {
       const userToTest: ICreateUserDTO = {
