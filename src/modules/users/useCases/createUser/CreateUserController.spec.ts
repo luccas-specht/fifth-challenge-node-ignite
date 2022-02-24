@@ -1,14 +1,14 @@
 import request from "supertest";
 import { Connection } from "typeorm";
-
 import { app } from "../../../../app";
-import CreateConnection from "../../../../database";
+import createConnection from "../../../../database";
+import { ICreateUserDTO } from "./ICreateUserDTO";
 
 let connection: Connection;
 
-describe("Authenticate User Controller", () => {
+describe("CreateUserController", () => {
   beforeAll(async () => {
-    connection = await CreateConnection();
+    connection = await createConnection();
     await connection.runMigrations();
   });
 
@@ -17,41 +17,29 @@ describe("Authenticate User Controller", () => {
     await connection.close();
   });
 
-  it("should be able to create a user", async () => {
-    const {
-      body: { token },
-    } = await request(app).post("/sessions").send({
-      email: "fakeadmin@rentx.com.br",
-      password: "fakeadmin",
-    });
+  it("should be able to create an user", async () => {
+    const userToTest: ICreateUserDTO = {
+      name: "it does not matter",
+      email: "lukinhasppt@gmail.com",
+      password: "it does not matter",
+    };
 
-    const response = await request(app)
-      .post("/categories")
-      .send({
-        name: "Fake category",
-        description: "Fake description",
-      })
-      .set({ Authorization: `Bearer ${token}` });
+    const response = await request(app).post("/api/v1/users").send(userToTest);
 
     expect(response.status).toBe(201);
   });
+});
 
-  it("should not be able to create a new category with name exists", async () => {
-    const {
-      body: { token },
-    } = await request(app).post("/sessions").send({
-      email: "fakeadmin@rentx.com.br",
-      password: "fakeadmin",
-    });
+it("should be not able to create an user when email already exists", async () => {
+  const user: ICreateUserDTO = {
+    name: "it does not matter",
+    email: "lukinhasppt@gmail.com",
+    password: "it does not matter",
+  };
 
-    const response = await request(app)
-      .post("/categories")
-      .send({
-        name: "Fake category",
-        description: "Fake description",
-      })
-      .set({ Authorization: `Bearer ${token}` });
+  const response = await request(app).post("/api/v1/users").send(user);
 
-    expect(response.status).toBe(400);
-  });
+  /* console.log(response); */
+
+  expect(response.status).toBe(400);
 });
